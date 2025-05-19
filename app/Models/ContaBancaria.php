@@ -1,72 +1,77 @@
 <?php
+    declare(strict_types=1);
+
     namespace App\Models;
 
     use App\Contracts\ContractContaBancaria;
     use App\Contracts\ContractOperacoesContaBancaria;
 
-    class ContaBancaria implements ContractOperacoesContaBancaria, ContractContaBancaria
+    class ContaBancaria
     {
-        private string $banco;
-        private string $agencia;
-        private string $conta;
+
+        /**
+         * o bloco de comentário abaixo é um exemplo de declaração de tipo, utilizando antes da versão 7.4 do PHP
+         * @var string
+         * @var int
+         * @var float
+         * @var bool
+         * @var array
+         * @var object
+         * @var mixed
+         */
+
+        /**
+         * @var string
+         */
+        public string $banco;
+
+        /**
+         * @var string
+         */
+        public string $nomeTitular;
+
+        /**
+         * @var string
+         */
+        public string $numeroAgencia;
+
+        /**
+         * @var string
+         */
+        public string $numeroConta;
+
+        /**
+         * @var float
+         */
         private float $saldo;
 
-        public function __construct(string $banco = '', string $agencia = '', string $conta = '', float $saldo = 0.0)
-        {
+        public function __construct($banco, $nomeTitular , $numeroAgencia, $numeroConta, $saldo = 0.00) {
             $this->banco = $banco;
-            $this->agencia = $agencia;
-            $this->conta = $conta;
+            $this->nomeTitular = $nomeTitular;
+            $this->numeroAgencia = $numeroAgencia;
+            $this->numeroConta = $numeroConta;
             $this->saldo = $saldo;
         }
-    
-        public function depositar(float $valor): void
-        {
-            if ($valor > 0) {
-                $this->saldo += $valor;
-            }
-        }
-    
-        public function sacar(float $valor): void
-        {
-            if ($valor > 0 && $this->saldo >= $valor) {
-                $this->saldo -= $valor;
-            }
-        }
-    
-        public function consultarSaldo(): float
-        {
+
+        public function getSaldo() : float {
             return $this->saldo;
         }
 
-        public function getBanco(): string
-        {
-            return $this->banco;
-        }
-        public function setBanco(string $banco): void {
-            $this->banco = $banco;
-        }
-
-        public function getAgencia(): string
-        {
-            return $this->agencia;
-        }
-        public function setAgencia(string $agencia): void {
-            $this->agencia = $agencia;
-        }
-
-        public function getConta(): string
-        {
-            return $this->conta;
-        }
-        public function setConta(string $conta): void {
-            $this->conta = $conta;
-        }
-
-        public function getSaldo(): float
-        {
+        public function setSaldo(float $valor) : float {
+            $this->saldo = $valor + $this->saldo;
             return $this->saldo;
-        }
-        public function setSaldo(float $saldo): void {
-            $this->saldo = $saldo;
         }
     }
+
+
+    $conta = new ContaBancaria(
+        'Banco do Brasil',
+        'João da Silva',
+        '1234-5',
+        '67890-1',
+        1000.00
+    );
+
+    var_dump($conta->getSaldo());
+
+    var_dump($conta);
